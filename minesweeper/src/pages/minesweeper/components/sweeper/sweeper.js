@@ -13,6 +13,7 @@ function createComponent(rows, columns) {
       });
       
   divContainer.innerHTML = tableHTML
+  divContainer.addEventListener('click', clickListener);
   
   return divContainer
 }
@@ -24,14 +25,21 @@ function generateTable(rows, columns) {
       table += '<tr>';
 
       for (let j = 0; j < columns; j++) {
-          table += '<td>';
-          // table += 'Cell ' + (i+1) + '-' + (j+1);
-          table += '</td>';
+          table += '<td></td>';
       }
       table += '</tr>';
   }
   table += '</table>';
   return table;
+}
+
+function clickListener(event) {
+  if (event.target.tagName.toLowerCase() === 'td') {
+    const cell = event.target;
+    const row = cell.parentElement.rowIndex
+    const col = cell.cellIndex
+    console.log('Вы кликнули на ' + row + ' ' + col);
+  }
 }
 
 export default createComponent;
