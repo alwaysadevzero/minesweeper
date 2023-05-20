@@ -1,0 +1,23 @@
+{
+  "devDependencies": {
+    "add": "^2.0.6",
+    "copy-webpack-plugin": "^11.0.0",
+    "css-loader": "^6.7.3",
+    "eslint-webpack-plugin": "^4.0.1",
+    "html-loader": "^4.2.0",
+    "html-webpack-plugin": "^5.5.1",
+    "style-loader": "^3.3.2",
+    "webpack": "^5.83.1",
+    "webpack-cli": "^5.1.1"
+  },
+  "dependencies": {
+    "sass": "^1.62.1",
+    "sass-loader": "^13.2.2",
+    "sass-resources-loader": "^2.2.5",
+    "webpack-dev-server": "^4.15.0"
+  },
+  "scripts": {
+    "build": "webpack --progress",
+    "start": "webpack-dev-server"
+  }
+}
