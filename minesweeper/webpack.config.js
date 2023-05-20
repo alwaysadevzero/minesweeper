@@ -2,11 +2,11 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const CopyPlugin = require("copy-webpack-plugin");
-
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
     //ничает сборку отсюда
-    entry: './src/index.js', 
+    entry: './src/pages/sweeper/index.js', 
     output: { //собранные файлы ложит сюда
       path: path.resolve(__dirname, 'dist'),
       filename: 'index.js', 
@@ -39,37 +39,36 @@ module.exports = {
                 test: /\.(woff(2)?|eot|ttf|otf)$/i,
                 type: 'asset/resource',
             },
-            {
-                test: /\.s[ac]ss$/i,
-                use: [
-                    // Creates `style` nodes from JS strings
-                    "style-loader",
-                    // Translates CSS into CommonJS
-                    "css-loader",
-                    // Compiles Sass to CSS
-                    "sass-loader",
-                    {
-                        loader: "sass-resources-loader",
-                        options: {
-                            resources: [
-                                './src/styles/style.scss',
-                            ]
-                        }
-                    }
-                ],
-            },
+            // {
+            //     test: /\.(sa|sc|c)ss$/i,
+            //     use: [
+            //       MiniCssExtractPlugin.loader, // instead of 'style-loader'
+            //       'css-loader',
+            //       'sass-loader',
+            //       {
+            //         loader: 'sass-resources-loader',
+            //         options: {
+            //           resources: ['./src/styles/style.scss'],
+            //         },
+            //       },
+            //     ],
+            //   },
         ],
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: "./src/index.html",
+            template: "./src/pages/sweeper/index.html",
             filename: "./index.html"
         }),
         new ESLintPlugin(),
+        // new MiniCssExtractPlugin({
+        //     filename: '[name].css',
+        //     chunkFilename: '[id].css',
+        //   }),
         // new CopyPlugin({
         //     patterns: [
-        //       { from: "source", to: "dest" },
-        //       { from: "other", to: "public" },
+        //       { from: "./src/assets", to: "./dist" },
+        //     //   { from: "other", to: "public" },
         //     ],
         //   }),
     ],
