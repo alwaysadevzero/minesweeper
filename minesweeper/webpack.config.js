@@ -6,7 +6,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
     //ничает сборку отсюда
-    entry: './src/pages/sweeper/index.js', 
+    entry: './src/pages/minesweeper/app-minesweeper.js', 
     output: { //собранные файлы ложит сюда
       path: path.resolve(__dirname, 'dist'),
       filename: 'index.js', 
@@ -57,7 +57,7 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: "./src/pages/sweeper/index.html",
+            template: "./src/pages/minesweeper/minesweeper.html",
             filename: "./index.html"
         }),
         new ESLintPlugin(),
