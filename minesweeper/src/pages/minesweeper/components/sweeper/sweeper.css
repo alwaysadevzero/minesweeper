@@ -1,0 +1,9 @@
+.field table{
+    margin: 0 auto;
+  }
+
+.field td{
+  border: 2px solid #7b7b7b;
+  height: 30px;
+  width: 30px;
+}
