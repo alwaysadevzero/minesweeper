@@ -5,22 +5,36 @@ const CssClasses = {
   CONTAINER: 'field',
 };
 
+let InstanceBoard;
+let componentCont;
+
+function updateComponent() {
+  let x = InstanceBoard.board;
+  x = x.flat();
+  const s = componentCont.querySelectorAll('td');
+
+  for (let i = 0; i < x.length; i += 1) {
+    if (x[i].mine) {
+      s[i].innerHTML = x[i].mine;
+    } else {
+      s[i].innerHTML = x[i].counter;
+    }
+  }
+}
+
 function clickListener(event) {
   event.preventDefault();
   if (event.target.tagName.toLowerCase() === 'td') {
     const cell = event.target;
     const row = cell.parentElement.rowIndex;
     const col = cell.cellIndex;
-
-    // eslint-disable-next-line no-console
-    console.log(`Вы кликнули на ${row} ${col}`);
-
-    // eslint-disable-next-line no-console
-    // if (event.type === 'contextmenu') console.log('правая');
+    InstanceBoard.fillMinesBoard(row, col);
+    InstanceBoard.showBoard();
+    updateComponent();
   }
 }
 
-function generateTable(rows, columns) {
+function generateBoard(rows, columns) {
   let table = '<table>';
 
   for (let i = 0; i < rows; i += 1) {
@@ -35,17 +49,20 @@ function generateTable(rows, columns) {
   return table;
 }
 
-function createComponent(rows, columns) {
-  const tableHTML = generateTable(rows, columns);
-  const divContainer = createElement({
+function createComponent(Board) {
+  InstanceBoard = Board;
+  const [row, col] = Board.getSizes();
+  const tableHTML = generateBoard(row, col);
+  const component = createElement({
     tagName: 'div',
     className: CssClasses.CONTAINER,
   });
 
-  divContainer.innerHTML = tableHTML;
-  divContainer.addEventListener('click', clickListener);
-  divContainer.addEventListener('contextmenu', clickListener);
-  return divContainer;
+  component.innerHTML = tableHTML;
+  component.addEventListener('click', clickListener);
+  // divContainer.addEventListener('contextmenu', clickListener);
+  componentCont = component;
+  return component;
 }
 
 export default createComponent;
