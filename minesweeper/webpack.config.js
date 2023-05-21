@@ -60,7 +60,7 @@ module.exports = {
             template: "./src/pages/minesweeper/minesweeper.html",
             filename: "./index.html"
         }),
-        new ESLintPlugin(),
+        new ESLintPlugin({fix: true}),
         // new MiniCssExtractPlugin({
         //     filename: '[name].css',
         //     chunkFilename: '[id].css',
