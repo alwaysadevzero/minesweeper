@@ -1,7 +1,7 @@
 import '../../reset.css';
 import '../../styles.css';
 
-import createComponent from './components/sweeper/sweeper';
+import createComponent from './components/board/board';
 
 const sweeper = createComponent(10, 10);
 

@@ -1,4 +1,4 @@
-import './sweeper.css';
+import './board.css';
 import createElement from '../../../../utils/create-element';
 
 const CssClasses = {
