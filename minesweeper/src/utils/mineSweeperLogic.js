@@ -27,7 +27,7 @@ export default class Board {
     return [this.row, this.col];
   }
 
-  fillMinesBoard(rowClick, colClick) {
+  fillBoard(rowClick, colClick) {
     this.board[rowClick][colClick].open = true;
 
     const totalCells = this.row * this.col;

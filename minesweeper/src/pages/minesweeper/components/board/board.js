@@ -9,18 +9,22 @@ let InstanceBoard;
 let componentCont;
 
 function updateComponent() {
-  let x = InstanceBoard.board;
-  x = x.flat();
-  const s = componentCont.querySelectorAll('td');
+  const board = InstanceBoard.board.flat();
+  const cells = componentCont.querySelectorAll('td');
 
-  for (let i = 0; i < x.length; i += 1) {
-    if (x[i].mine) {
-      s[i].innerHTML = x[i].mine;
+  if (board.length !== cells.length) throw new Error('board.length !== cells.length');
+
+  for (let i = 0; i < board.length; i += 1) {
+    if (board[i].mine) {
+      cells[i].innerHTML = board[i].mine;
     } else {
-      s[i].innerHTML = x[i].counter;
+      cells[i].innerHTML = board[i].counter;
     }
   }
 }
+
+// eslint-disable-next-line no-console
+// console.log(InstanceBoard.board);
 
 function clickListener(event) {
   event.preventDefault();
@@ -28,15 +32,18 @@ function clickListener(event) {
     const cell = event.target;
     const row = cell.parentElement.rowIndex;
     const col = cell.cellIndex;
-    InstanceBoard.fillMinesBoard(row, col);
-    InstanceBoard.showBoard();
+
+    if (!InstanceBoard.isFilled) {
+      InstanceBoard.isFilled = true;
+      InstanceBoard.generateBoard();
+      InstanceBoard.fillBoard(row, col);
+    }
     updateComponent();
   }
 }
 
-function generateBoard(rows, columns) {
+function renderComponent(rows, columns) {
   let table = '<table>';
-
   for (let i = 0; i < rows; i += 1) {
     table += '<tr>';
 
@@ -52,16 +59,17 @@ function generateBoard(rows, columns) {
 function createComponent(Board) {
   InstanceBoard = Board;
   const [row, col] = Board.getSizes();
-  const tableHTML = generateBoard(row, col);
+
   const component = createElement({
     tagName: 'div',
     className: CssClasses.CONTAINER,
   });
-
-  component.innerHTML = tableHTML;
-  component.addEventListener('click', clickListener);
-  // divContainer.addEventListener('contextmenu', clickListener);
   componentCont = component;
+
+  component.innerHTML = renderComponent(row, col);
+  component.addEventListener('click', clickListener);
+  component.addEventListener('contextmenu', clickListener);
+
   return component;
 }
 
