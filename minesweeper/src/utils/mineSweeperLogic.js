@@ -1,7 +1,7 @@
 import { shuffle, adjacentMinesCounter } from './board-helper';
 
 export default class Board {
-  constructor(row = 5, col = 5, mines = 20) {
+  constructor(row = 10, col = 10, mines = 10) {
     this.row = row;
     this.col = col;
     this.mines = mines;
