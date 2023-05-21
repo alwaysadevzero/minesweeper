@@ -1,8 +1,8 @@
-import "../../reset.css";
-import "../../styles.css"
+import '../../reset.css';
+import '../../styles.css';
 
-import createComponent from "./components/sweeper/sweeper"
+import createComponent from './components/sweeper/sweeper';
 
-const sweeper = createComponent(10,10)
+const sweeper = createComponent(10, 10);
 
-document.body.append(sweeper)
+document.body.append(sweeper);
