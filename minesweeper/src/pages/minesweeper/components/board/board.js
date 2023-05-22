@@ -110,10 +110,18 @@ function loadGame() {
   console.log('load game');
 }
 
-function restartGame() {
-  const [row, col] = InstanceBoard.getSizes();
+function restartGame(boardRow, BoardCol, mines) {
+  let [row, col] = [boardRow, BoardCol];
+  let minesNum = mines;
+  if (!(col > 0 && col <= 25
+      && row > 0 && row <= 25)) {
+    [row, col] = InstanceBoard.getSizes();
+  }
+  if (minesNum >= boardRow * BoardCol) {
+    minesNum = 10;
+  }
   componentCont.innerHTML = renderComponent(row, col);
-  InstanceBoard.restartGame();
+  InstanceBoard.restartGame(row, col, minesNum);
 }
 
 function clickListener(event) {

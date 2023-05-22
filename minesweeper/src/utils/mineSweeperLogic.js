@@ -78,7 +78,12 @@ export default class Board {
     }
   }
 
-  restartGame() {
+  restartGame(row, col, mines) {
+    if (row > 0 && col > 0) {
+      this.row = row;
+      this.col = col;
+    }
+    this.mines = mines;
     this.isFilled = false;
     this.gameOver = false;
     this.gameWin = false;

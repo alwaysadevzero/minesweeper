@@ -4,13 +4,14 @@ import '../../styles.css';
 
 import * as Board from './components/board/board';
 import * as SaveGame from './components/saveLoadReload/saveLoadReload';
+import * as Level from './components/level/level';
 
-const minesweeper = new Minesweeper(10, 10, 1);
+const minesweeper = new Minesweeper(20, 20, 50);
 
 const board = Board.createComponent(minesweeper);
 const saveGame = SaveGame.createComponent();
-
-document.body.append(saveGame, board);
+const level = Level.createComponent();
+document.body.append(level, saveGame, board);
 // classboard.generateBoard();
 // eslint-disable-next-line no-console
 // classboard.showBoard();
