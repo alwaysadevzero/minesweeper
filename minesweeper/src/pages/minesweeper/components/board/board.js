@@ -117,7 +117,7 @@ function restartGame(boardRow, BoardCol, mines) {
       && row > 0 && row <= 25)) {
     [row, col] = InstanceBoard.getSizes();
   }
-  if (minesNum >= boardRow * BoardCol) {
+  if (minesNum >= boardRow * BoardCol || !minesNum) {
     minesNum = 10;
   }
   componentCont.innerHTML = renderComponent(row, col);

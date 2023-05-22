@@ -50,29 +50,29 @@ export default class Board {
   loadGame(savedGame) {
     try {
       const parsedGame = JSON.parse(savedGame);
-      if (
-        parsedGame
-        && typeof parsedGame.row === 'number'
-        && typeof parsedGame.col === 'number'
-        && typeof parsedGame.mines === 'number'
-        && Array.isArray(parsedGame.board)
-        && typeof parsedGame.isFilled === 'boolean'
-        && typeof parsedGame.gameOver === 'boolean'
-      ) {
-        this.row = parsedGame.row;
-        this.col = parsedGame.col;
-        this.mines = parsedGame.mines;
-        this.board = parsedGame.board;
-        this.isFilled = parsedGame.isFilled;
-        this.gameOver = parsedGame.gameOver;
-        this.gameWin = parsedGame.gameWin;
-        this.steps = parsedGame.steps;
-        this.time = parsedGame.time;
-        this.flags = parsedGame.flags;
-        this.score = parsedGame.score;
-      } else {
-        throw new Error('Invalid saved game data');
-      }
+      // if (
+      //   parsedGame
+      //   && typeof parsedGame.row === 'number'
+      //   && typeof parsedGame.col === 'number'
+      //   && typeof parsedGame.mines === 'number'
+      //   // && Array.isArray(parsedGame.board)
+      //   && typeof parsedGame.isFilled === 'boolean'
+      //   && typeof parsedGame.gameOver === 'boolean'
+      // ) {
+      this.row = parsedGame.row;
+      this.col = parsedGame.col;
+      this.mines = parsedGame.mines;
+      this.board = parsedGame.board;
+      this.isFilled = parsedGame.isFilled;
+      this.gameOver = parsedGame.gameOver;
+      this.gameWin = parsedGame.gameWin;
+      this.steps = parsedGame.steps;
+      this.time = parsedGame.time;
+      this.flags = parsedGame.flags;
+      this.score = parsedGame.score;
+      // } else {
+      //   throw new Error('Invalid saved game data');
+      // }
     } catch (error) {
       throw new Error('Invalid saved game data');
     }
