@@ -1,7 +1,36 @@
+.field {
+  position: relative;
+  max-width: fit-content;
+  margin: 0 auto;
+}
+
+.status {
+  z-index: 2;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex; /* Добавлено */
+  align-items: center; /* Добавлено */
+  justify-content: center; /* Добавлено */
+  -webkit-user-select: none;
+  font-size: calc(20px + 2vw);
+}
+.lose {
+  background-color: hsla(0, 100%, 41%, 0.83)
+}
+
+.win {
+  background-color: hsla(128, 100%, 49%, 0.6);
+}
+
 .field table{
   margin: 0 auto;
   border-collapse: revert;
   border-spacing: 0; 
+  z-index: 0;
+  position: relative;
 }
 
 .field td {
@@ -23,15 +52,15 @@ border: 2px solid #7b7b7b;
 } */
 
 .field td.open{
-border: 2px solid #8b8b8b;
-background-color: #bebebe;
+  border: 2px solid #8b8b8b;
+  background-color: #bebebe;
 }
 
 .field td[data-mine] {
-border: none;
-background-image: url("../../../../assets/images/mine.png");
-background-repeat: no-repeat;
-background-size: contain;
+  border: 2px solid #444444;
+  background-image: url("../../../../assets/images/mine.png");
+  background-repeat: no-repeat;
+  background-size: contain;
 }
 
 .field .flag {
@@ -78,33 +107,33 @@ justify-content: center;
 }
 
 .field td[data-count="1"]::after {
-color: blue;
+  color: #007B7B;
 }
 
 .field td[data-count="2"]::after {
-color: green;
+  color: #00a732;
 }
 
 .field td[data-count="3"]::after {
-color: red;
+  color:  #88ff00;
 }
 
 .field td[data-count="4"]::after {
-color: #00007B;
+  color: #c8ff00;
 }
 
 .field td[data-count="5"]::after {
-color: #7B0000;
+  color: #ffa600;
 }
 
 .field td[data-count="6"]::after {
-color: #007B7B;
+  color: #ff5e00;
 }
 
 .field td[data-count="7"]::after {
-color: #000;
+  color: #ff2600;
 }
 
 .field td[data-count="8"]::after {
-color: #7B7B7B;
+  color: #000000;
 }

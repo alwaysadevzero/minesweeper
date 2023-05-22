@@ -8,10 +8,11 @@ export default class Board {
     this.board = [];
     this.isFilled = false;
     this.gameOver = false;
+    this.gameWin = false;
     this.steps = null;
     this.time = null;
     this.flags = null;
-    this.score = null;
+    this.score = 0;
   }
 
   generateBoard() {
@@ -37,6 +38,7 @@ export default class Board {
       board: this.board,
       isFilled: this.isFilled,
       gameOver: this.gameOver,
+      gameWin: this.gameWin,
       steps: this.steps,
       time: this.time,
       flags: this.flags,
@@ -63,6 +65,7 @@ export default class Board {
         this.board = parsedGame.board;
         this.isFilled = parsedGame.isFilled;
         this.gameOver = parsedGame.gameOver;
+        this.gameWin = parsedGame.gameWin;
         this.steps = parsedGame.steps;
         this.time = parsedGame.time;
         this.flags = parsedGame.flags;
@@ -78,15 +81,17 @@ export default class Board {
   restartGame() {
     this.isFilled = false;
     this.gameOver = false;
+    this.gameWin = false;
     this.steps = null;
     this.time = null;
     this.flags = null;
-    this.score = null;
+    this.score = 0;
     this.generateBoard();
   }
 
   openCell(row, col) {
     if (this.gameOver) return false;
+    if (this.gameWin) return false;
 
     const currentCell = this.board[row][col];
 
@@ -98,9 +103,15 @@ export default class Board {
     }
     if (currentCell.counter === 0) {
       this.openEmptyCell(row, col);
+    } else {
+      this.score += 1;
     }
-    this.score += currentCell.counter;
+
     currentCell.open = true;
+    // eslint-disable-next-line no-console
+    if (this.score === (this.row * this.col) - this.mines) {
+      this.gameWin = true;
+    }
     return true;
   }
 
@@ -121,12 +132,13 @@ export default class Board {
       const [checkRow, checkCol] = checkCells[i];
       const cell = this.board[checkRow][checkCol];
       if (!cell.open && cell.counter) {
-        this.score += cell.counter;
         cell.open = true;
+        this.score += 1;
       }
       if (!cell.open && cell.counter === 0) {
         cell.open = true;
         this.openEmptyCell(checkRow, checkCol);
+        this.score += 1;
       }
     }
   }

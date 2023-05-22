@@ -3,7 +3,13 @@ import createElement from '../../../../utils/create-element';
 
 const CssClasses = {
   CONTAINER: 'field',
+  STATUS: 'status',
+  LOSE: 'lose',
+  WIN: 'win',
 };
+
+const TEXT_BOARD_WIN = 'YOU WIN!';
+const TEXT_BOARD_LOSE = 'YOU LOSE!';
 
 let InstanceBoard;
 let componentCont;
@@ -29,6 +35,13 @@ function drawGameOver(board, collectionCells) {
       cells[i].dataset.mine = 'true';
     }
   }
+  const element = createElement({
+    tagName: 'div',
+    className: CssClasses.STATUS,
+    textContent: TEXT_BOARD_LOSE,
+  });
+  element.classList.add(CssClasses.LOSE);
+  componentCont.append(element);
 }
 function drawGame(board, collectionCells) {
   const cells = collectionCells;
@@ -48,18 +61,31 @@ function drawGame(board, collectionCells) {
   }
 }
 
+function drawGameWin() {
+  const element = createElement({
+    tagName: 'div',
+    className: CssClasses.STATUS,
+    textContent: TEXT_BOARD_WIN,
+  });
+  element.classList.add(CssClasses.WIN);
+  componentCont.append(element);
+}
+
 function updateComponent() {
   const board = InstanceBoard.getFlatArray();
   const collectionCells = componentCont.querySelectorAll('td');
   if (board.length !== collectionCells.length) throw new Error('length rendered cells !==  length board');
 
-  if (!InstanceBoard.gameOver) {
-    drawGame(board, collectionCells);
-  }
   if (InstanceBoard.gameOver) {
     drawGameOver(board, collectionCells);
     // eslint-disable-next-line no-console
     console.log('YOU LOOSE');
+  }
+  if (InstanceBoard.gameWin) {
+    drawGameWin();
+  }
+  if (!InstanceBoard.gameOver) {
+    drawGame(board, collectionCells);
   }
 }
 
@@ -121,10 +147,12 @@ function createComponent(Board) {
     tagName: 'div',
     className: CssClasses.CONTAINER,
   });
-  componentCont = component;
+
   component.innerHTML = renderComponent(row, col);
   component.addEventListener('click', clickListener);
   component.addEventListener('contextmenu', clickListener);
+
+  componentCont = component;
 
   return component;
 }

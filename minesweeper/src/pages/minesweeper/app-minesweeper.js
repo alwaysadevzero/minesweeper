@@ -5,7 +5,7 @@ import '../../styles.css';
 import * as Board from './components/board/board';
 import * as SaveGame from './components/saveLoadReload/saveLoadReload';
 
-const minesweeper = new Minesweeper(10, 10, 10);
+const minesweeper = new Minesweeper(10, 10, 1);
 
 const board = Board.createComponent(minesweeper);
 const saveGame = SaveGame.createComponent();
