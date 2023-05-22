@@ -1,104 +1,109 @@
 .field table{
-    margin: 0 auto;
-    
-  }
-
-.field td{
-  height: 30px;
-  width: 30px;
-  background-color: #bdbdbd;
-  border: 2px solid #7b7b7b;
-  border-top-color: #fff;
-  border-left-color: #fff;
-  position: relative;
+  margin: 0 auto;
+  border-collapse: revert;
+  border-spacing: 0; 
 }
 
-.field td:active{
-  border: 2px solid #7b7b7b;
-  background-color: #363535;
+.field td {
+height: 30px;
+width: 30px;
+background-color: #bdbdbd;
+border: 2px solid #7b7b7b;
+position: relative;
+}
+
+.field td:not(.open){
+  border-top-color: #fff;
+  border-left-color: #fff;
+}
+
+.field td:active {
+background-color: #363535; /* change this color to your preferred active color */
+border: 2px solid #7b7b7b; /* this adds a border when the cell is active */
+}
+
+.field td.open{
+border: 2px solid #7b7b7b;
+background-color: #a8a8a8;
 }
 
 .field td[data-mine] {
-  border: none;
-  background-image: url("../../../../assets/images/mine.png");
-  background-repeat: no-repeat;
-  background-position: 1px 1px;
-  background-size: contain;
+border: none;
+background-image: url("../../../../assets/images/mine.png");
+background-repeat: no-repeat;
+background-position: 1px 1px;
+background-size: contain;
 }
 
 .field td::after {
-  content: attr(data-count);
-  font-family: "Press Start 2P", monospace;
-  font-size: 16px;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+content: attr(data-count);
+font-family: "Press Start 2P", monospace;
+font-size: 16px;
+position: absolute;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+display: flex;
+align-items: center;
+justify-content: center;
 }
 
 .field .flag {
-  /* background-image: url("images/flag.png"); */
-  background-repeat: no-repeat;
-  background-position: 2px 1px;
+/* background-image: url("images/flag.png"); */
+background-repeat: no-repeat;
+background-position: 2px 1px;
 }
 
 @media (max-width: 800px) {
-  .field td{
-    height: 20px;
-    width: 20px;
-  }
-  
+.field td{
+  height: 20px;
+  width: 20px;
+}
 }
 
 @media (max-width: 500px) {
-  .field td{
-    height: 16px;
-    width: 16px;
-  }
-  
+.field td{
+  height: 16px;
+  width: 16px;
+}
 }
 
 @media (max-width: 500px) {
-  .field td{
-    height: 12px;
-    width: 12px;
-  }
-  
+.field td{
+  height: 12px;
+  width: 12px;
+}
 }
 
 .field td[data-count="1"]::after {
-  color: blue;
+color: blue;
 }
 
 .field td[data-count="2"]::after {
-  color: green;
+color: green;
 }
 
 .field td[data-count="3"]::after {
-  color: red;
+color: red;
 }
 
 .field td[data-count="4"]::after {
-  color: #00007B;
+color: #00007B;
 }
 
 .field td[data-count="5"]::after {
-  color: #7B0000;
+color: #7B0000;
 }
 
 .field td[data-count="6"]::after {
-  color: #007B7B;
+color: #007B7B;
 }
 
 .field td[data-count="7"]::after {
-  color: #000;
+color: #000;
 }
 
 .field td[data-count="8"]::after {
-  color: #7B7B7B;
+color: #7B7B7B;
 }
-

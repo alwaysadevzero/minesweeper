@@ -18,6 +18,7 @@ function updateComponent(rowClick, colClick) {
   for (let i = 0; i < renderCells.length; i += 1) {
     if (gameStatus && board[i].open) {
       renderCells[i].dataset.count = board[i].counter;
+      renderCells[i].classList.add('open');
     }
     if (!gameStatus && board[i].mine) {
       renderCells[i].dataset.mine = 'true';
