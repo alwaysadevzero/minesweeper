@@ -1,14 +1,17 @@
-import Board from '../../utils/mineSweeperLogic';
+import Minesweeper from '../../utils/mineSweeperLogic';
 import '../../reset.css';
 import '../../styles.css';
 
-import createComponent from './components/board/board';
+import * as Board from './components/board/board';
+import * as SaveGame from './components/saveLoadReload/saveLoadReload';
 
-const classboard = new Board(10, 10, 10);
+const minesweeper = new Minesweeper(10, 10, 10);
 
+const board = Board.createComponent(minesweeper);
+const saveGame = SaveGame.createComponent();
+
+document.body.append(saveGame, board);
 // classboard.generateBoard();
 // eslint-disable-next-line no-console
 // classboard.showBoard();
-
-const sweeper = createComponent(classboard);
-document.body.append(sweeper);
+SaveGame.createComponent(minesweeper);

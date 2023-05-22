@@ -8,6 +8,28 @@ const CssClasses = {
 let InstanceBoard;
 let componentCont;
 
+function renderComponent(rows, columns) {
+  let table = '<table>';
+  for (let i = 0; i < rows; i += 1) {
+    table += '<tr>';
+
+    for (let j = 0; j < columns; j += 1) {
+      table += '<td></td>';
+    }
+    table += '</tr>';
+  }
+  table += '</table>';
+  return table;
+}
+
+function drawGameOver(board, collectionCells) {
+  const cells = collectionCells;
+  for (let i = 0; i < collectionCells.length; i += 1) {
+    if (board[i].mine) {
+      cells[i].dataset.mine = 'true';
+    }
+  }
+}
 function drawGame(board, collectionCells) {
   const cells = collectionCells;
   for (let i = 0; i < collectionCells.length; i += 1) {
@@ -26,15 +48,6 @@ function drawGame(board, collectionCells) {
   }
 }
 
-function drawGameOver(board, collectionCells) {
-  const cells = collectionCells;
-  for (let i = 0; i < collectionCells.length; i += 1) {
-    if (board[i].mine) {
-      cells[i].dataset.mine = 'true';
-    }
-  }
-}
-
 function updateComponent() {
   const board = InstanceBoard.getFlatArray();
   const collectionCells = componentCont.querySelectorAll('td');
@@ -48,6 +61,33 @@ function updateComponent() {
     // eslint-disable-next-line no-console
     console.log('YOU LOOSE');
   }
+}
+
+function saveGame() {
+  if (InstanceBoard.gameOver && InstanceBoard.isFilled) return;
+  // Сохранение игры
+  const savedGame = InstanceBoard.saveGame();
+  localStorage.setItem('savedGame', savedGame);
+  // eslint-disable-next-line no-console
+  console.log('save game');
+}
+
+function loadGame() {
+  // Загрузка игры
+  const loadgame = localStorage.getItem('savedGame');
+  InstanceBoard.loadGame(loadgame);
+
+  const [row, col] = InstanceBoard.getSizes();
+  componentCont.innerHTML = renderComponent(row, col);
+  updateComponent();
+  // eslint-disable-next-line no-console
+  console.log('load game');
+}
+
+function restartGame() {
+  const [row, col] = InstanceBoard.getSizes();
+  componentCont.innerHTML = renderComponent(row, col);
+  InstanceBoard.restartGame();
 }
 
 function clickListener(event) {
@@ -72,20 +112,6 @@ function clickListener(event) {
   }
 }
 
-function renderComponent(rows, columns) {
-  let table = '<table>';
-  for (let i = 0; i < rows; i += 1) {
-    table += '<tr>';
-
-    for (let j = 0; j < columns; j += 1) {
-      table += '<td></td>';
-    }
-    table += '</tr>';
-  }
-  table += '</table>';
-  return table;
-}
-
 function createComponent(Board) {
   InstanceBoard = Board;
   InstanceBoard.generateBoard();
@@ -103,4 +129,6 @@ function createComponent(Board) {
   return component;
 }
 
-export default createComponent;
+export {
+  createComponent, saveGame, loadGame, restartGame,
+};

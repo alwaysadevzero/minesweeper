@@ -8,6 +8,10 @@ export default class Board {
     this.board = [];
     this.isFilled = false;
     this.gameOver = false;
+    this.steps = null;
+    this.time = null;
+    this.flags = null;
+    this.score = null;
   }
 
   generateBoard() {
@@ -25,6 +29,62 @@ export default class Board {
     }
   }
 
+  saveGame() {
+    const savedGame = {
+      row: this.row,
+      col: this.col,
+      mines: this.mines,
+      board: this.board,
+      isFilled: this.isFilled,
+      gameOver: this.gameOver,
+      steps: this.steps,
+      time: this.time,
+      flags: this.flags,
+      score: this.score,
+    };
+    return JSON.stringify(savedGame);
+  }
+
+  loadGame(savedGame) {
+    try {
+      const parsedGame = JSON.parse(savedGame);
+      if (
+        parsedGame
+        && typeof parsedGame.row === 'number'
+        && typeof parsedGame.col === 'number'
+        && typeof parsedGame.mines === 'number'
+        && Array.isArray(parsedGame.board)
+        && typeof parsedGame.isFilled === 'boolean'
+        && typeof parsedGame.gameOver === 'boolean'
+      ) {
+        this.row = parsedGame.row;
+        this.col = parsedGame.col;
+        this.mines = parsedGame.mines;
+        this.board = parsedGame.board;
+        this.isFilled = parsedGame.isFilled;
+        this.gameOver = parsedGame.gameOver;
+        this.steps = parsedGame.steps;
+        this.time = parsedGame.time;
+        this.flags = parsedGame.flags;
+        this.score = parsedGame.score;
+      } else {
+        throw new Error('Invalid saved game data');
+      }
+    } catch (error) {
+      throw new Error('Invalid saved game data');
+    }
+  }
+
+  restartGame() {
+    this.isFilled = false;
+    this.gameOver = false;
+    this.steps = null;
+    this.time = null;
+    this.flags = null;
+    this.score = null;
+    this.generateBoard();
+  }
+
   openCell(row, col) {
     if (this.gameOver) return false;
 
@@ -39,6 +99,7 @@ export default class Board {
     if (currentCell.counter === 0) {
       this.openEmptyCell(row, col);
     }
+    this.score += currentCell.counter;
     currentCell.open = true;
     return true;
   }
@@ -60,6 +121,7 @@ export default class Board {
       const [checkRow, checkCol] = checkCells[i];
       const cell = this.board[checkRow][checkCol];
       if (!cell.open && cell.counter) {
+        this.score += cell.counter;
         cell.open = true;
       }
       if (!cell.open && cell.counter === 0) {
