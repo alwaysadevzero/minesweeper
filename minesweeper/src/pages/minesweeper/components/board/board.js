@@ -39,6 +39,7 @@ function updateComponent() {
   const board = InstanceBoard.getFlatArray();
   const collectionCells = componentCont.querySelectorAll('td');
   if (board.length !== collectionCells.length) throw new Error('length rendered cells !==  length board');
+
   if (!InstanceBoard.gameOver) {
     drawGame(board, collectionCells);
   }
@@ -56,10 +57,6 @@ function clickListener(event) {
     const row = cell.parentElement.rowIndex;
     const col = cell.cellIndex;
     if (!InstanceBoard.isFilled) {
-      // eslint-disable-next-line no-console
-      console.log('fill Board');
-      // eslint-disable-next-line no-console
-      console.log(InstanceBoard.showBoard());
       InstanceBoard.isFilled = true;
       InstanceBoard.fillBoard(row, col);
     }
@@ -92,10 +89,7 @@ function renderComponent(rows, columns) {
 function createComponent(Board) {
   InstanceBoard = Board;
   InstanceBoard.generateBoard();
-  // eslint-disable-next-line no-console
-  console.log('generate empty board');
-  // eslint-disable-next-line no-console
-  console.log(InstanceBoard.showBoard());
+
   const [row, col] = Board.getSizes();
   const component = createElement({
     tagName: 'div',
