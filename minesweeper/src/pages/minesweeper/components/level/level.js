@@ -1,4 +1,6 @@
+import './level.css';
 import createElement from '../../../../utils/create-element';
+import * as SaveGame from '../saveLoadReload/saveLoadReload';
 import { restartGame } from '../board/board';
 
 const CssClasses = {
@@ -157,7 +159,11 @@ function createApplyComponent() {
 
 function createComponent() {
   const component = createSelectComponent();
-  component.append(createRangeComoponent(), createApplyComponent());
+  component.append(
+    createRangeComoponent(),
+    createApplyComponent(),
+    SaveGame.createComponent(),
+  );
 
   // component.append(buttonSave, buttonLoad, buttonReload);
   return component;

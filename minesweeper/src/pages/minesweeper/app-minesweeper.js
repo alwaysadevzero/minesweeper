@@ -1,18 +1,15 @@
-import Minesweeper from '../../utils/mineSweeperLogic';
 import '../../reset.css';
 import '../../styles.css';
 
+import Minesweeper from '../../utils/mineSweeperLogic';
 import * as Board from './components/board/board';
-import * as SaveGame from './components/saveLoadReload/saveLoadReload';
 import * as Level from './components/level/level';
+import * as Status from './components/status/status';
 
 const minesweeper = new Minesweeper(10, 10, 10);
 
 const board = Board.createComponent(minesweeper);
-const saveGame = SaveGame.createComponent();
+// const saveGame = SaveGame.createComponent();
 const level = Level.createComponent();
-document.body.append(level, saveGame, board);
-// classboard.generateBoard();
-// eslint-disable-next-line no-console
-// classboard.showBoard();
-SaveGame.createComponent(minesweeper);
+const status = Status.createComponent();
+document.body.append(level, status, board);

@@ -1,3 +1,4 @@
+import './saveLoadReload.css';
 import createElement from '../../../../utils/create-element';
 import { saveGame, loadGame, restartGame } from '../board/board';
 

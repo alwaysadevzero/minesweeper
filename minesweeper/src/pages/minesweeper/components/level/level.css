@@ -1,0 +1,100 @@
+.difficult {
+  width: fit-content;
+  border-collapse: revert;
+  display: flex;
+  gap: 5px;
+  background-color: #bdbdbd;
+  border-top-color: #fff;
+  border-left-color: #fff;
+  align-content: space-between;
+  justify-content: space-evenly;
+  align-items: center;
+
+  flex-wrap: wrap;
+  margin: 0 auto;
+
+}
+
+.difficult * {
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+}
+
+
+/* CSS */
+.apply {
+  align-items: center;
+  background-color: #fff;
+  border: 2px solid #000;
+  box-sizing: border-box;
+  color: #000;
+  cursor: pointer;
+  display: inline-flex;
+  fill: #000;
+  font-family: Inter,sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  height: 38px;
+  justify-content: center;
+  letter-spacing: -.8px;
+  line-height: 24px;
+  min-width: 60px;
+  outline: 0;
+  padding: 0 17px;
+  text-align: center;
+  text-decoration: none;
+  transition: all .3s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.apply:focus {
+  color: #171e29;
+}
+
+.apply:hover {
+  border-color: #06f;
+  color: #06f;
+  fill: #06f;
+}
+
+.apply:active {
+  border-color: #06f;
+  color: #06f;
+  fill: #06f;
+}
+
+@media (min-width: 768px) {
+  .apply {
+    min-width: 170px;
+  }
+}
+
+
+.select-level{
+  font-family: Inter,sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.form {
+  display: flex;
+  flex-wrap: wrap;
+
+}
+
+.select {
+  display: grid;
+  grid-template-areas: "select";
+  align-items: center;
+  position: relative;
+  min-width: 15ch;
+  max-width: 30ch;
+  border: 1px solid var(--select-border);
+  border-radius: 0.25em;
+  padding: 0.25em 0.5em;
+  font-size: 1.25rem;
+  cursor: pointer;
+  line-height: 1.1;
+}
