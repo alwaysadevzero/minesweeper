@@ -4,7 +4,7 @@ import '../../styles.css';
 
 import createComponent from './components/board/board';
 
-const classboard = new Board(10, 10, 80);
+const classboard = new Board(10, 10, 10);
 
 // classboard.generateBoard();
 // eslint-disable-next-line no-console

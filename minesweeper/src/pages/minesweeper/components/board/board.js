@@ -8,23 +8,26 @@ const CssClasses = {
 let InstanceBoard;
 let componentCont;
 
-function updateComponent() {
-  const board = InstanceBoard.board.flat();
-  const cells = componentCont.querySelectorAll('td');
+function updateComponent(rowClick, colClick) {
+  const gameStatus = InstanceBoard.openCell(rowClick, colClick);
 
-  if (board.length !== cells.length) throw new Error('board.length !== cells.length');
+  const board = InstanceBoard.getFlatArray();
+  const renderCells = componentCont.querySelectorAll('td');
+  if (board.length !== renderCells.length) throw new Error('length rendered cells !==  length board');
 
-  for (let i = 0; i < board.length; i += 1) {
-    if (board[i].mine) {
-      cells[i].innerHTML = board[i].mine;
-    } else {
-      cells[i].innerHTML = board[i].counter;
+  for (let i = 0; i < renderCells.length; i += 1) {
+    if (gameStatus && board[i].open) {
+      renderCells[i].innerHTML = board[i].counter;
+    }
+    if (!gameStatus && board[i].mine) {
+      renderCells[i].innerHTML = 'M ';
     }
   }
+  if (!gameStatus) {
+    // eslint-disable-next-line no-console
+    console.log('YOU LOOSE');
+  }
 }
-
-// eslint-disable-next-line no-console
-// console.log(InstanceBoard.board);
 
 function clickListener(event) {
   event.preventDefault();
@@ -35,10 +38,9 @@ function clickListener(event) {
 
     if (!InstanceBoard.isFilled) {
       InstanceBoard.isFilled = true;
-      InstanceBoard.generateBoard();
       InstanceBoard.fillBoard(row, col);
     }
-    updateComponent();
+    updateComponent(row, col);
   }
 }
 
@@ -58,14 +60,14 @@ function renderComponent(rows, columns) {
 
 function createComponent(Board) {
   InstanceBoard = Board;
-  const [row, col] = Board.getSizes();
+  InstanceBoard.generateBoard();
 
+  const [row, col] = Board.getSizes();
   const component = createElement({
     tagName: 'div',
     className: CssClasses.CONTAINER,
   });
   componentCont = component;
-
   component.innerHTML = renderComponent(row, col);
   component.addEventListener('click', clickListener);
   component.addEventListener('contextmenu', clickListener);

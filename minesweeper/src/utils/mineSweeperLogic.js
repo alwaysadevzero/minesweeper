@@ -1,4 +1,4 @@
-import { shuffle, adjacentMinesCounter } from './board-helper';
+import { shuffle, adjacentMinesCounter, getAdjacentCells } from './board-helper';
 
 export default class Board {
   constructor(row = 10, col = 10, mines = 10) {
@@ -6,6 +6,8 @@ export default class Board {
     this.col = col;
     this.mines = mines;
     this.board = [];
+    this.isFilled = false;
+    this.gameOver = false;
   }
 
   generateBoard() {
@@ -19,6 +21,47 @@ export default class Board {
           flagged: false,
           mine: false,
         };
+      }
+    }
+  }
+
+  openCell(row, col) {
+    if (this.gameOver) return false;
+
+    if (this.board[row][col].mine) {
+      this.gameOver = true;
+      return false;
+    }
+    if (this.board[row][col].counter === 0) {
+      this.openEmptyCell(row, col);
+    }
+    this.board[row][col].open = true;
+    return true;
+  }
+
+  openEmptyCell(row, col) {
+    const checkCells = getAdjacentCells(row, col, this.row, this.col);
+    for (let i = 0; i < checkCells.length; i += 1) {
+      const [checkRow, checkCol] = checkCells[i];
+      const cell = this.board[checkRow][checkCol];
+      if (!cell.open && cell.counter) {
+        cell.open = true;
+      }
+      if (!cell.open && cell.counter === 0) {
+        cell.open = true;
+        this.openEmptyCell(checkRow, checkCol);
+      }
+    }
+  }
+
+  getFlatArray() {
+    return this.board.flat();
+  }
+
+  showMines() {
+    for (let row = 0; row < this.row; row += 1) {
+      for (let col = 0; col < this.col; col += 1) {
+        if (this.board[row][col].mine) this.board[row][col].open = true;
       }
     }
   }
