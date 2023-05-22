@@ -113,12 +113,11 @@ function loadGame() {
 function restartGame(boardRow, BoardCol, mines) {
   let [row, col] = [boardRow, BoardCol];
   let minesNum = mines;
-  if (!(col > 0 && col <= 25
-      && row > 0 && row <= 25)) {
+  if (!row || !col) {
     [row, col] = InstanceBoard.getSizes();
   }
-  if (minesNum >= boardRow * BoardCol || !minesNum) {
-    minesNum = 10;
+  if (!minesNum) {
+    minesNum = InstanceBoard.mines;
   }
   componentCont.innerHTML = renderComponent(row, col);
   InstanceBoard.restartGame(row, col, minesNum);
