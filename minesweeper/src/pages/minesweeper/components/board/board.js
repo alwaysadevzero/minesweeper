@@ -17,10 +17,10 @@ function updateComponent(rowClick, colClick) {
 
   for (let i = 0; i < renderCells.length; i += 1) {
     if (gameStatus && board[i].open) {
-      renderCells[i].innerHTML = board[i].counter;
+      renderCells[i].dataset.count = board[i].counter;
     }
     if (!gameStatus && board[i].mine) {
-      renderCells[i].innerHTML = 'M ';
+      renderCells[i].dataset.mine = 'true';
     }
   }
   if (!gameStatus) {
