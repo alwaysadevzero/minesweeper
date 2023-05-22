@@ -15,7 +15,7 @@
   align-items: center; /* Добавлено */
   justify-content: center; /* Добавлено */
   -webkit-user-select: none;
-  font-size: calc(20px + 2vw);
+  font-size: calc(20px + 1vw);
 }
 .lose {
   background-color: hsla(0, 100%, 41%, 0.83)
