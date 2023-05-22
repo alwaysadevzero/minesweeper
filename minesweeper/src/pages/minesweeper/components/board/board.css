@@ -17,22 +17,27 @@ position: relative;
   border-left-color: #fff;
 }
 
-.field td:active {
-background-color: #363535; /* change this color to your preferred active color */
-border: 2px solid #7b7b7b; /* this adds a border when the cell is active */
-}
+/* .field td:active {
+background-color: #363535; 
+border: 2px solid #7b7b7b; 
+} */
 
 .field td.open{
-border: 2px solid #7b7b7b;
-background-color: #a8a8a8;
+border: 2px solid #8b8b8b;
+background-color: #bebebe;
 }
 
 .field td[data-mine] {
 border: none;
 background-image: url("../../../../assets/images/mine.png");
 background-repeat: no-repeat;
-background-position: 1px 1px;
 background-size: contain;
+}
+
+.field .flag {
+  background-image: url("../../../../assets/images/flag.png");
+  background-repeat: no-repeat;
+  background-size: contain;
 }
 
 .field td::after {
@@ -49,11 +54,7 @@ align-items: center;
 justify-content: center;
 }
 
-.field .flag {
-/* background-image: url("images/flag.png"); */
-background-repeat: no-repeat;
-background-position: 2px 1px;
-}
+
 
 @media (max-width: 800px) {
 .field td{

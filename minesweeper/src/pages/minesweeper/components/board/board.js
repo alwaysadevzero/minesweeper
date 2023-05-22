@@ -8,23 +8,43 @@ const CssClasses = {
 let InstanceBoard;
 let componentCont;
 
-function updateComponent(rowClick, colClick) {
-  const gameStatus = InstanceBoard.openCell(rowClick, colClick);
+function drawGame(board, collectionCells) {
+  const cells = collectionCells;
+  for (let i = 0; i < collectionCells.length; i += 1) {
+    const { open, counter, flagged } = board[i];
+    if (open) {
+      if (counter > 0) cells[i].dataset.count = counter;
+      cells[i].classList.add('open');
 
-  const board = InstanceBoard.getFlatArray();
-  const renderCells = componentCont.querySelectorAll('td');
-  if (board.length !== renderCells.length) throw new Error('length rendered cells !==  length board');
-
-  for (let i = 0; i < renderCells.length; i += 1) {
-    if (gameStatus && board[i].open) {
-      renderCells[i].dataset.count = board[i].counter;
-      renderCells[i].classList.add('open');
+      InstanceBoard.offFlagFlatArr(i);
+      cells[i].classList.remove('flag');
     }
-    if (!gameStatus && board[i].mine) {
-      renderCells[i].dataset.mine = 'true';
+    if (flagged && !open) {
+      cells[i].classList.add('flag');
+    }
+    if (!flagged) cells[i].classList.remove('flag');
+  }
+}
+
+function drawGameOver(board, collectionCells) {
+  const cells = collectionCells;
+  for (let i = 0; i < collectionCells.length; i += 1) {
+    if (board[i].mine) {
+      cells[i].dataset.mine = 'true';
     }
   }
-  if (!gameStatus) {
+}
+
+function updateComponent() {
+  const board = InstanceBoard.getFlatArray();
+  const collectionCells = componentCont.querySelectorAll('td');
+  if (board.length !== collectionCells.length) throw new Error('length rendered cells !==  length board');
+
+  if (!InstanceBoard.gameOver) {
+    drawGame(board, collectionCells);
+  }
+  if (InstanceBoard.gameOver) {
+    drawGameOver(board, collectionCells);
     // eslint-disable-next-line no-console
     console.log('YOU LOOSE');
   }
@@ -36,12 +56,19 @@ function clickListener(event) {
     const cell = event.target;
     const row = cell.parentElement.rowIndex;
     const col = cell.cellIndex;
-
     if (!InstanceBoard.isFilled) {
       InstanceBoard.isFilled = true;
       InstanceBoard.fillBoard(row, col);
     }
-    updateComponent(row, col);
+    // eslint-disable-next-line no-console
+    if (event.type === 'contextmenu') {
+      InstanceBoard.changeflagCell(row, col);
+    }
+    if (event.type === 'click') {
+      InstanceBoard.openCell(row, col);
+    }
+
+    updateComponent();
   }
 }
 

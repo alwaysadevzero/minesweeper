@@ -28,15 +28,30 @@ export default class Board {
   openCell(row, col) {
     if (this.gameOver) return false;
 
-    if (this.board[row][col].mine) {
+    const currentCell = this.board[row][col];
+
+    if (currentCell.flagged) return true;
+
+    if (currentCell.mine) {
       this.gameOver = true;
       return false;
     }
-    if (this.board[row][col].counter === 0) {
+    if (currentCell.counter === 0) {
       this.openEmptyCell(row, col);
     }
-    this.board[row][col].open = true;
+    currentCell.open = true;
     return true;
+  }
+
+  changeflagCell(row, col) {
+    const flagState = this.board[row][col].flagged;
+    this.board[row][col].flagged = !flagState;
+    return flagState;
+  }
+
+  offFlagFlatArr(index) {
+    const arr = this.getFlatArray();
+    arr[index].flagged = false;
   }
 
   openEmptyCell(row, col) {
@@ -71,8 +86,6 @@ export default class Board {
   }
 
   fillBoard(rowClick, colClick) {
-    this.board[rowClick][colClick].open = true;
-
     const totalCells = this.row * this.col;
     let positions = [];
 
