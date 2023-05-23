@@ -95,30 +95,29 @@ export default class Board {
   }
 
   openCell(row, col) {
-    const cell = this.board[row][col];
-
-    if (cell.mine) {
-      this.gameOver = true;
-      this.gameRun = false;
-    }
-
     if (this.gameOver) return false;
     if (this.gameWin) return false;
-    if (cell.flagged) return true;
-    this.gameRun = true;
-    this.clicks += 1;
-    cell.open = true;
 
-    if (cell.counter === 0) {
+    const currentCell = this.board[row][col];
+
+    if (currentCell.flagged) return true;
+
+    if (currentCell.mine) {
+      this.gameOver = true;
+      this.gameRun = false;
+      return false;
+    }
+    if (currentCell.counter === 0) {
       this.openEmptyCell(row, col);
     } else {
       this.score += 1;
     }
-    const totalcell = (this.row * this.col) - this.mines;
-    // eslint-disable-next-line
-    console.log(this.score, totalcell);
 
-    if (this.score === totalcell) this.gameWin = true;
+    currentCell.open = true;
+    // eslint-disable-next-line no-console
+    if (this.score === (this.row * this.col) - this.mines) {
+      this.gameWin = true;
+    }
     return true;
   }
 
