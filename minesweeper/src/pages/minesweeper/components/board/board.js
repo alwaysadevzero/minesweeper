@@ -102,12 +102,14 @@ function loadGame() {
 
   const [row, col] = Minesweeper.getSizes();
   boardComponet.innerHTML = renderComponent(row, col);
+  Status.clearComponent();
   updateComponent();
 }
 
 function restartGame() {
   const [row, col] = Minesweeper.getSizes();
   boardComponet.innerHTML = renderComponent(row, col);
+  Status.clearComponent();
   Minesweeper.restartGame();
 }
 

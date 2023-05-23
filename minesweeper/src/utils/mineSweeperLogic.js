@@ -112,7 +112,7 @@ export default class Board {
     } else {
       this.score += 1;
     }
-
+    this.clicks += 1;
     currentCell.open = true;
     // eslint-disable-next-line no-console
     if (this.score === (this.row * this.col) - this.mines) {
@@ -122,7 +122,10 @@ export default class Board {
   }
 
   changeflagCell(row, col) {
+    this.clicks += 1;
     const cell = this.board[row][col];
+
+    if (!cell.flagged && this.flags >= this.mines) return cell.flagged;
 
     if (cell.open) return cell.flagged;
 
@@ -158,7 +161,7 @@ export default class Board {
         this.openEmptyCell(checkRow, checkCol);
       }
       if (cell.open && cell.flagged) {
-        this.flags += 1;
+        this.flags -= 1;
         cell.flagged = false;
       }
       if (this.score === (this.row * this.col) - this.mines) this.gameWin = true;

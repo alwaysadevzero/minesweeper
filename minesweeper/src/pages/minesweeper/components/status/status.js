@@ -18,7 +18,7 @@ const COMPONENTS = {
 };
 
 const TEXT_TIME = 'Time';
-const TEXT_MINE_REMAIN = 'Mine remain';
+const TEXT_MINE_REMAIN = 'Mines';
 const TEXT_FLAGS_REMAIN = 'Flag remain';
 const TEXT_CLICKS = 'Clicks';
 
@@ -49,14 +49,20 @@ function stopSecondCounter() {
 function updateComponent() {
   if (Minesweeper.gameRun && !timerId) runSecondCounter();
   if (!Minesweeper.gameRun && timerId) stopSecondCounter();
-  // COMPONENTS.TIME.lastChild.textContent = '000';
-  // seconds = null;
-  // timerId = null;
 
   if (Minesweeper.gameRun) {
     COMPONENTS.CLICKS.lastChild.textContent = Minesweeper.clicks;
-    COMPONENTS.FLAGS_REMAIN.lastChild.textContent = Minesweeper.flags;
+    COMPONENTS.FLAGS_REMAIN.lastChild.textContent = Minesweeper.mines - Minesweeper.flags;
+    COMPONENTS.MINE_REMAIN.lastChild.textContent = Minesweeper.flags;
   }
+}
+
+function clearComponent() {
+  COMPONENTS.CLICKS.lastChild.textContent = '';
+  COMPONENTS.FLAGS_REMAIN.lastChild.textContent = '';
+  COMPONENTS.MINE_REMAIN.lastChild.textContent = '';
+  stopSecondCounter();
+  COMPONENTS.TIME.lastChild.textContent = '';
 }
 
 function createDial() {
@@ -111,5 +117,4 @@ function createComponent(classSweeper) {
   );
   return component;
 }
-// eslint-disable-next-line  import/prefer-default-export
-export { createComponent, updateComponent };
+export { createComponent, updateComponent, clearComponent };
