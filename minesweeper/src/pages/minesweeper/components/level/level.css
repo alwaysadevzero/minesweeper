@@ -1,15 +1,13 @@
 .difficult {
-  width: fit-content;
-  border-collapse: revert;
+  width: 100vw;
   display: flex;
   gap: 5px;
   background-color: #bdbdbd;
-  border-top-color: #fff;
-  border-left-color: #fff;
   align-content: space-between;
-  justify-content: space-evenly;
+  justify-content: center;
   align-items: center;
-
+  border-right: solid #e2e2e2;
+  border-left: solid #e2e2e2;
   flex-wrap: wrap;
   margin: 0 auto;
 

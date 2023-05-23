@@ -1,7 +1,7 @@
 import './level.css';
 import createElement from '../../../../utils/create-element';
 import * as SaveGame from '../saveLoadReload/saveLoadReload';
-import { restartGame } from '../board/board';
+import { changeSizeBoard } from '../board/board';
 
 const CssClasses = {
   CONTAINER: 'difficult',
@@ -27,7 +27,6 @@ const DIFFICULT = {
   TEXT_DIFFICULT_HARD: 'Hard',
 };
 
-// let selectComponent;
 let rangeComponent;
 let rangeOutputComponent;
 let size;
@@ -47,14 +46,11 @@ function changeSizeRange(selectedValue) {
     rangeComponent.max = '624';
     size = 25;
   }
-  // eslint-disable-next-line
-  console.log(size)
 }
 
 function makeApply() {
-  // eslint-disable-next-line
-  console.log(rangeComponent.value)
-  restartGame(size, size, rangeComponent.value);
+  const mines = rangeComponent.value;
+  changeSizeBoard(size, size, mines);
 }
 
 function createSelectComponent() {
@@ -94,7 +90,6 @@ function createSelectComponent() {
 
     select.append(option);
   }
-  // selectComponent = select;
   selectDiv.append(select);
   component.append(label, selectDiv);
 
@@ -164,9 +159,7 @@ function createComponent() {
     createApplyComponent(),
     SaveGame.createComponent(),
   );
-
-  // component.append(buttonSave, buttonLoad, buttonReload);
   return component;
 }
 // eslint-disable-next-line  import/prefer-default-export
-export { createComponent, DIFFICULT };
+export { createComponent };
