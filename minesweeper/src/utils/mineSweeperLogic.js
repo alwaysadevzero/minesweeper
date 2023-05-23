@@ -9,9 +9,11 @@ export default class Board {
     this.isFilled = false;
     this.gameOver = false;
     this.gameWin = false;
+    this.gameRun = false;
     this.steps = null;
     this.time = null;
-    this.flags = null;
+    this.clicks = null;
+    this.flags = 0;
     this.score = 0;
   }
 
@@ -39,8 +41,10 @@ export default class Board {
       isFilled: this.isFilled,
       gameOver: this.gameOver,
       gameWin: this.gameWin,
+      gameRun: this.gameRun,
       steps: this.steps,
       time: this.time,
+      clicks: this.clicks,
       flags: this.flags,
       score: this.score,
     };
@@ -50,15 +54,6 @@ export default class Board {
   loadGame(savedGame) {
     try {
       const parsedGame = JSON.parse(savedGame);
-      // if (
-      //   parsedGame
-      //   && typeof parsedGame.row === 'number'
-      //   && typeof parsedGame.col === 'number'
-      //   && typeof parsedGame.mines === 'number'
-      //   // && Array.isArray(parsedGame.board)
-      //   && typeof parsedGame.isFilled === 'boolean'
-      //   && typeof parsedGame.gameOver === 'boolean'
-      // ) {
       this.row = parsedGame.row;
       this.col = parsedGame.col;
       this.mines = parsedGame.mines;
@@ -67,12 +62,11 @@ export default class Board {
       this.gameOver = parsedGame.gameOver;
       this.gameWin = parsedGame.gameWin;
       this.steps = parsedGame.steps;
+      this.gameRun = parsedGame.gameRun;
       this.time = parsedGame.time;
       this.flags = parsedGame.flags;
       this.score = parsedGame.score;
-      // } else {
-      //   throw new Error('Invalid saved game data');
-      // }
+      this.clicks = parsedGame.clicks;
     } catch (error) {
       throw new Error('Invalid saved game data');
     }
@@ -83,47 +77,56 @@ export default class Board {
       this.row = row;
       this.col = col;
     }
-    this.mines = mines;
+    if (mines > 0) {
+      this.mines = mines;
+    }
     this.isFilled = false;
     this.gameOver = false;
     this.gameWin = false;
+    this.gameRun = false;
     this.steps = null;
     this.time = null;
-    this.flags = null;
+    this.flags = 0;
     this.score = 0;
+    this.clicks = 0;
     this.generateBoard();
   }
 
   openCell(row, col) {
+    const cell = this.board[row][col];
+    const totalcell = (this.row * this.col) - this.mines;
+
+    if (cell.mine) this.gameOver = true;
+    if (cell.flagged) return true;
+    if (this.score === totalcell) this.gameWin = true;
+
     if (this.gameOver) return false;
     if (this.gameWin) return false;
 
-    const currentCell = this.board[row][col];
+    this.gameRun = true;
+    this.clicks += 1;
+    cell.open = true;
 
-    if (currentCell.flagged) return true;
-
-    if (currentCell.mine) {
-      this.gameOver = true;
-      return false;
-    }
-    if (currentCell.counter === 0) {
+    if (cell.counter === 0) {
       this.openEmptyCell(row, col);
     } else {
       this.score += 1;
-    }
-
-    currentCell.open = true;
-    // eslint-disable-next-line no-console
-    if (this.score === (this.row * this.col) - this.mines) {
-      this.gameWin = true;
     }
     return true;
   }
 
   changeflagCell(row, col) {
-    const flagState = this.board[row][col].flagged;
-    this.board[row][col].flagged = !flagState;
-    return flagState;
+    const cell = this.board[row][col];
+
+    if (cell.open) return cell.flagged;
+
+    if (cell.flagged) {
+      this.flags -= 1;
+    } else {
+      this.flags += 1;
+    }
+    cell.flagged = !cell.flagged;
+    return cell.flagged;
   }
 
   offFlagFlatArr(index) {
@@ -133,9 +136,11 @@ export default class Board {
 
   openEmptyCell(row, col) {
     const checkCells = getAdjacentCells(row, col, this.row, this.col);
+
     for (let i = 0; i < checkCells.length; i += 1) {
       const [checkRow, checkCol] = checkCells[i];
       const cell = this.board[checkRow][checkCol];
+
       if (!cell.open && cell.counter) {
         cell.open = true;
         this.score += 1;
@@ -152,14 +157,6 @@ export default class Board {
     return this.board.flat();
   }
 
-  showMines() {
-    for (let row = 0; row < this.row; row += 1) {
-      for (let col = 0; col < this.col; col += 1) {
-        if (this.board[row][col].mine) this.board[row][col].open = true;
-      }
-    }
-  }
-
   getSizes() {
     return [this.row, this.col];
   }
@@ -171,14 +168,11 @@ export default class Board {
     for (let i = 0; i < totalCells; i += 1) {
       positions.push(i);
     }
-
     // Удаление позиции клика из массива позиций
     const clickPosition = rowClick * this.col + colClick;
     positions.splice(clickPosition, 1);
-
     // Перемешивание позиций
     positions = shuffle(positions);
-
     // Установка мин на случайных позициях
     for (let i = 0; i < this.mines; i += 1) {
       const position = positions[i];
@@ -186,7 +180,6 @@ export default class Board {
       const col = position % this.col;
       this.board[row][col].mine = true;
     }
-
     this.board = adjacentMinesCounter(this.board);
   }
 
