@@ -11,5 +11,5 @@ const minesweeper = new Minesweeper(10, 10, 10);
 const board = Board.createComponent(minesweeper);
 // const saveGame = SaveGame.createComponent();
 const level = Level.createComponent();
-const status = Status.createComponent();
+const status = Status.createComponent(minesweeper);
 document.body.append(level, status, board);
