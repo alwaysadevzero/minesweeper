@@ -6,7 +6,6 @@ export default class Board {
     this.col = col;
     this.mines = mines;
     this.board = [];
-    this.isFilled = false;
     this.gameOver = false;
     this.gameWin = false;
     this.gameRun = false;
@@ -72,7 +71,7 @@ export default class Board {
     }
   }
 
-  restartGame(row, col, mines) {
+  resizeBoard(row, col, mines) {
     if (row > 0 && col > 0) {
       this.row = row;
       this.col = col;
@@ -80,7 +79,10 @@ export default class Board {
     if (mines > 0) {
       this.mines = mines;
     }
-    this.isFilled = false;
+    this.generateBoard();
+  }
+
+  restartGame() {
     this.gameOver = false;
     this.gameWin = false;
     this.gameRun = false;
@@ -94,15 +96,15 @@ export default class Board {
 
   openCell(row, col) {
     const cell = this.board[row][col];
-    const totalcell = (this.row * this.col) - this.mines;
 
-    if (cell.mine) this.gameOver = true;
-    if (cell.flagged) return true;
-    if (this.score === totalcell) this.gameWin = true;
+    if (cell.mine) {
+      this.gameOver = true;
+      this.gameRun = false;
+    }
 
     if (this.gameOver) return false;
     if (this.gameWin) return false;
-
+    if (cell.flagged) return true;
     this.gameRun = true;
     this.clicks += 1;
     cell.open = true;
@@ -112,6 +114,11 @@ export default class Board {
     } else {
       this.score += 1;
     }
+    const totalcell = (this.row * this.col) - this.mines;
+    // eslint-disable-next-line
+    console.log(this.score, totalcell);
+
+    if (this.score === totalcell) this.gameWin = true;
     return true;
   }
 
@@ -132,6 +139,7 @@ export default class Board {
   offFlagFlatArr(index) {
     const arr = this.getFlatArray();
     arr[index].flagged = false;
+    // this.flags -= 1;
   }
 
   openEmptyCell(row, col) {
@@ -147,9 +155,14 @@ export default class Board {
       }
       if (!cell.open && cell.counter === 0) {
         cell.open = true;
-        this.openEmptyCell(checkRow, checkCol);
         this.score += 1;
+        this.openEmptyCell(checkRow, checkCol);
       }
+      if (cell.open && cell.flagged) {
+        this.flags += 1;
+        cell.flagged = false;
+      }
+      if (this.score === (this.row * this.col) - this.mines) this.gameWin = true;
     }
   }
 

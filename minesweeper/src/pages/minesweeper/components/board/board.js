@@ -1,5 +1,6 @@
 import './board.css';
 import createElement from '../../../../utils/create-element';
+import * as Status from '../status/status';
 
 const CssClasses = {
   CONTAINER: 'field',
@@ -11,8 +12,8 @@ const CssClasses = {
 const TEXT_BOARD_WIN = 'YOU WIN!';
 const TEXT_BOARD_LOSE = 'YOU LOSE!';
 
-let InstanceBoard;
-let componentCont;
+let Minesweeper;
+let boardComponet;
 
 function renderComponent(rows, columns) {
   let table = '<table>';
@@ -28,9 +29,9 @@ function renderComponent(rows, columns) {
   return table;
 }
 
-function drawGameOver(board, collectionCells) {
-  const cells = collectionCells;
-  for (let i = 0; i < collectionCells.length; i += 1) {
+function drawGameOver(board, tdCells) {
+  const cells = tdCells;
+  for (let i = 0; i < cells.length; i += 1) {
     if (board[i].mine) {
       cells[i].dataset.mine = 'true';
     }
@@ -41,17 +42,18 @@ function drawGameOver(board, collectionCells) {
     textContent: TEXT_BOARD_LOSE,
   });
   element.classList.add(CssClasses.LOSE);
-  componentCont.append(element);
+  boardComponet.append(element);
 }
-function drawGame(board, collectionCells) {
-  const cells = collectionCells;
-  for (let i = 0; i < collectionCells.length; i += 1) {
+
+function drawGame(board, tdCells) {
+  const cells = tdCells;
+  for (let i = 0; i < cells.length; i += 1) {
     const { open, counter, flagged } = board[i];
     if (open) {
       if (counter > 0) cells[i].dataset.count = counter;
       cells[i].classList.add('open');
 
-      InstanceBoard.offFlagFlatArr(i);
+      Minesweeper.offFlagFlatArr(i);
       cells[i].classList.remove('flag');
     }
     if (flagged && !open) {
@@ -68,88 +70,80 @@ function drawGameWin() {
     textContent: TEXT_BOARD_WIN,
   });
   element.classList.add(CssClasses.WIN);
-  componentCont.append(element);
+  boardComponet.append(element);
 }
 
 function updateComponent() {
-  const board = InstanceBoard.getFlatArray();
-  const collectionCells = componentCont.querySelectorAll('td');
-  if (board.length !== collectionCells.length) throw new Error('length rendered cells !==  length board');
+  const board = Minesweeper.getFlatArray();
+  const cells = boardComponet.querySelectorAll('td');
+  if (board.length !== cells.length) throw new Error('length rendered cells !==  length board');
 
-  if (InstanceBoard.gameOver) {
-    drawGameOver(board, collectionCells);
-    // eslint-disable-next-line no-console
-    console.log('YOU LOOSE');
+  if (Minesweeper.gameOver) {
+    drawGameOver(board, cells);
   }
-  if (InstanceBoard.gameWin) {
+  if (Minesweeper.gameWin) {
     drawGameWin();
   }
-  if (!InstanceBoard.gameOver) {
-    drawGame(board, collectionCells);
+  if (Minesweeper.gameRun) {
+    drawGame(board, cells);
   }
+  Status.updateComponent();
 }
 
 function saveGame() {
-  if (InstanceBoard.gameOver && InstanceBoard.isFilled) return;
-  // Сохранение игры
-  const savedGame = InstanceBoard.saveGame();
+  if (Minesweeper.gameOver && !Minesweeper.gameRun) return;
+  const savedGame = Minesweeper.saveGame();
   localStorage.setItem('savedGame', savedGame);
-  // eslint-disable-next-line no-console
-  console.log('save game');
 }
 
 function loadGame() {
-  // Загрузка игры
   const loadgame = localStorage.getItem('savedGame');
-  InstanceBoard.loadGame(loadgame);
+  Minesweeper.loadGame(loadgame);
 
-  const [row, col] = InstanceBoard.getSizes();
-  componentCont.innerHTML = renderComponent(row, col);
+  const [row, col] = Minesweeper.getSizes();
+  boardComponet.innerHTML = renderComponent(row, col);
   updateComponent();
-  // eslint-disable-next-line no-console
-  console.log('load game');
 }
 
-function restartGame(boardRow, BoardCol, mines) {
-  let [row, col] = [boardRow, BoardCol];
-  let minesNum = mines;
-  if (!row || !col) {
-    [row, col] = InstanceBoard.getSizes();
-  }
-  if (!minesNum) {
-    minesNum = InstanceBoard.mines;
-  }
-  componentCont.innerHTML = renderComponent(row, col);
-  InstanceBoard.restartGame(row, col, minesNum);
+function restartGame() {
+  const [row, col] = Minesweeper.getSizes();
+  boardComponet.innerHTML = renderComponent(row, col);
+  Minesweeper.restartGame();
+}
+
+function changeSizeBoard(row, col, mines) {
+  Minesweeper.resizeBoard(row, col, mines);
+  restartGame();
 }
 
 function clickListener(event) {
   event.preventDefault();
+
   if (event.target.tagName.toLowerCase() === 'td') {
     const cell = event.target;
     const row = cell.parentElement.rowIndex;
     const col = cell.cellIndex;
-    if (!InstanceBoard.isFilled) {
-      InstanceBoard.isFilled = true;
-      InstanceBoard.fillBoard(row, col);
+
+    if (!Minesweeper.gameRun) {
+      Minesweeper.gameRun = true;
+      Minesweeper.fillBoard(row, col);
     }
-    // eslint-disable-next-line no-console
     if (event.type === 'contextmenu') {
-      InstanceBoard.changeflagCell(row, col);
+      Minesweeper.changeflagCell(row, col);
     }
     if (event.type === 'click') {
-      InstanceBoard.openCell(row, col);
+      Minesweeper.openCell(row, col);
     }
-
     updateComponent();
   }
 }
 
-function createComponent(Board) {
-  InstanceBoard = Board;
-  InstanceBoard.generateBoard();
+function createComponent(minesweeper) {
+  Minesweeper = minesweeper;
+  Minesweeper.generateBoard();
 
-  const [row, col] = Board.getSizes();
+  const [row, col] = Minesweeper.getSizes();
+
   const component = createElement({
     tagName: 'div',
     className: CssClasses.CONTAINER,
@@ -159,11 +153,11 @@ function createComponent(Board) {
   component.addEventListener('click', clickListener);
   component.addEventListener('contextmenu', clickListener);
 
-  componentCont = component;
+  boardComponet = component;
 
   return component;
 }
 
 export {
-  createComponent, saveGame, loadGame, restartGame,
+  createComponent, saveGame, loadGame, restartGame, changeSizeBoard,
 };
