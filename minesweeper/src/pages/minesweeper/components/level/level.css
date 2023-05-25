@@ -78,10 +78,13 @@
 
 .form {
   display: flex;
-  flex-wrap: wrap;
-
+  flex-wrap: nowrap;
 }
 
+.range {
+  display: flex;
+  flex-wrap: nowrap;
+}
 .select {
   display: grid;
   grid-template-areas: "select";
