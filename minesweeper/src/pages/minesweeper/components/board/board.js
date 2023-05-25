@@ -2,6 +2,7 @@ import './board.css';
 import createElement from '../../../../utils/create-element';
 import * as Status from '../status/status';
 import * as Audio from '../audio/audio';
+import * as Results from '../results/results';
 
 const CssClasses = {
   CONTAINER: 'field',
@@ -31,6 +32,7 @@ function renderComponent(rows, columns) {
 }
 
 function drawGameOver(board, tdCells) {
+  Results.saveResult();
   const cells = tdCells;
   for (let i = 0; i < cells.length; i += 1) {
     if (board[i].mine) {

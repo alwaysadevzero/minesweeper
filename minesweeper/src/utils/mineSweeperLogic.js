@@ -71,6 +71,15 @@ export default class Board {
     }
   }
 
+  getResult() {
+    return {
+      score: this.score,
+      clicks: this.clicks,
+      mines: this.mines,
+      flags: this.flags,
+    };
+  }
+
   resizeBoard(row, col, mines) {
     if (row > 0 && col > 0) {
       this.row = row;

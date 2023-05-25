@@ -1,0 +1,37 @@
+.results {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.results .line {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.results .line div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: white;
+  color: black;
+  padding: 5px;
+  margin: 5px;
+  border-radius: 5px;
+  flex-basis: auto;
+}
+
+.results .line div div {
+  margin-left: 5px;
+}
+
+
+@media (max-width: 490px) {
+  .results .line div {
+    font-size: 10px;
+    padding: 2px;
+    margin: 2px;
+    }
+  
+}

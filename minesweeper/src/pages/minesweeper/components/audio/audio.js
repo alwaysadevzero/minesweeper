@@ -86,8 +86,6 @@ function createComponent() {
   inputElement.setAttribute('step', '0.01');
 
   inputElementrange.addEventListener('input', changeVolumeListener);
-  // document.addEventListener('click', playLeftClick);
-  // document.addEventListener('contextmenu', playRightClick);
   component.append(svg, inputElement);
   return component;
 }
