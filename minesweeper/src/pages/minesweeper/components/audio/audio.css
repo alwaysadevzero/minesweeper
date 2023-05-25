@@ -1,0 +1,14 @@
+.audio__svg svg{
+  width: 20px;
+  height: 20px;
+}
+
+.audio {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap
+}
+
+.audio__svg.muted path{
+  fill: red;
+}

@@ -1,6 +1,7 @@
 import './board.css';
 import createElement from '../../../../utils/create-element';
 import * as Status from '../status/status';
+import * as Audio from '../audio/audio';
 
 const CssClasses = {
   CONTAINER: 'field',
@@ -79,9 +80,11 @@ function updateComponent() {
   if (board.length !== cells.length) throw new Error('length rendered cells !==  length board');
 
   if (Minesweeper.gameOver) {
+    Audio.playLose();
     drawGameOver(board, cells);
   }
   if (Minesweeper.gameWin) {
+    Audio.playWin();
     drawGameWin();
   }
   if (Minesweeper.gameRun) {
@@ -119,8 +122,9 @@ function changeSizeBoard(row, col, mines) {
 }
 
 function clickListener(event) {
+  if (event.type === 'click') Audio.playLeftClick();
+  if (event.type === 'contextmenu') Audio.playRightClick();
   event.preventDefault();
-
   if (event.target.tagName.toLowerCase() === 'td') {
     const cell = event.target;
     const row = cell.parentElement.rowIndex;

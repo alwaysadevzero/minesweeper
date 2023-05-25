@@ -2,6 +2,7 @@ import './level.css';
 import createElement from '../../../../utils/create-element';
 import * as SaveGame from '../saveLoadReload/saveLoadReload';
 import { changeSizeBoard } from '../board/board';
+import * as Audio from '../audio/audio';
 
 const CssClasses = {
   CONTAINER: 'difficult',
@@ -158,6 +159,7 @@ function createComponent() {
     createRangeComoponent(),
     createApplyComponent(),
     SaveGame.createComponent(),
+    Audio.createComponent(),
   );
   return component;
 }

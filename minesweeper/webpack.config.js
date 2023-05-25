@@ -32,13 +32,18 @@ module.exports = {
                 use: ['style-loader', 'css-loader']
             },
             {
-                test: /\.(?:ico|gif|png|jpg|jpeg|svg)$/i,
+                test: /\.(?:ico|gif|png|jpg|jpeg|mp3|wav)$/i,
                 type: 'asset/resource',
             },
             {
                 test: /\.(woff(2)?|eot|ttf|otf)$/i,
                 type: 'asset/resource',
             },
+            {
+                test: /\.svg$/,
+                use: 'svg-inline-loader'
+            },
+              
             // {
             //     test: /\.(sa|sc|c)ss$/i,
             //     use: [
@@ -61,6 +66,11 @@ module.exports = {
             filename: "./index.html"
         }),
         new ESLintPlugin({fix: true}),
+        new CopyPlugin({
+            patterns: [
+              { from: 'src/assets/audio', to: 'assets/audio' },
+            ],
+          }),
         // new MiniCssExtractPlugin({
         //     filename: '[name].css',
         //     chunkFilename: '[id].css',
